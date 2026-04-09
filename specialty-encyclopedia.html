@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特产百科 - 万花谷</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding-bottom: 20px;
+        }
+        
+        .card {
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .card-interactive {
+            cursor: pointer;
+        }
+        
+        .card-interactive:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .card-locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: #e6e6fa;
+            padding: 30px;
+            border: 2px solid #000;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-text {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .modal-contact {
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #000;
+        }
+        
+        .close-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .card {
+                min-width: 150px;
+                padding: 15px;
+            }
+            
+            .card-title {
+                font-size: 14px;
+            }
+            
+            .card-description {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="page-title">特产百科</div>
+        
+        <div class="cards-container">
+            <div class="card card-interactive" onclick="showModal('醉魂草')">
+                <div class="card-title">醉魂草</div>
+                <div class="card-description">管制药材</div>
+            </div>
+            
+            <div class="card card-interactive" onclick="showModal('毒龙花')">
+                <div class="card-title">毒龙花</div>
+                <div class="card-description">五毒教特有</div>
+            </div>
+            
+            <div class="card card-interactive" onclick="showModal('断魂花')">
+                <div class="card-title">断魂花</div>
+                <div class="card-description">管制药材</div>
+            </div>
+            
+            <div class="card card-interactive" onclick="showModal('清毒丹')">
+                <div class="card-title">清毒丹</div>
+                <div class="card-description">万花谷神药</div>
+            </div>
+            
+            <div class="card card-locked">
+                <div class="card-title">霸王花</div>
+                <div class="card-description"></div>
+            </div>
+            
+            <div class="card card-locked">
+                <div class="card-title">假发盆栽</div>
+                <div class="card-description"></div>
+            </div>
+            
+            <div class="card card-locked">
+                <div class="card-title">食人花</div>
+                <div class="card-description"></div>
+            </div>
+            
+            <div class="card card-locked">
+                <div class="card-title">吸蓝花</div>
+                <div class="card-description"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-text" id="modalText"></div>
+            <div class="modal-contact" id="modalContact"></div>
+            <button class="close-button" onclick="closeModal()">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        const items = {
+            '毒龙花': {
+                title: '毒龙花',
+                text: '该种植物只会在五毒教附近生长，是五毒教特有植物，有特殊的气味。本谷专门仿照五毒教环境建造试验田尝试种植。',
+                contact: ''
+            },
+            '醉魂草': {
+                title: '醉魂草',
+                text: '这种草药性烈，少量可安神，过量则会让人陷入昏迷。若搭配其他药材，更能炼制出令人失智的迷药，为万花谷管制药材。',
+                contact: ''
+            },
+            '断魂花': {
+                title: '断魂花',
+                text: '搭配醉魂草可制成慢性毒药，为万花谷管制药材。',
+                contact: ''
+            },
+            '清毒丹': {
+                title: '清毒丹',
+                text: '万花谷特质神药，可以清除体内毒素，为居家行走杀人越货必备之物。',
+                contact: '商务合作请联系：555-XXXX-1234'
+            }
+        };
+        
+        function showModal(itemName) {
+            const item = items[itemName];
+            if (item) {
+                document.getElementById('modalTitle').textContent = item.title;
+                document.getElementById('modalText').textContent = item.text;
+                document.getElementById('modalContact').textContent = item.contact;
+                document.getElementById('modal').style.display = 'flex';
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

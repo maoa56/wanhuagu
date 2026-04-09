@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唐影 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+        
+        .business-card {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .card-content {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .card-codes {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-item {
+            margin-bottom: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .code-question {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">唐影</div>
+            
+            <div class="paragraph">
+                唐影，唐门暗影堂的顶尖杀手，十二岁入堂以来，独立完成多项委托，业务好评率有目共睹，信奉"暗影随行，一击必中"的准则。
+            </div>
+            
+            <div class="paragraph">
+                随身携带武器千机匣，搭配唐门特质淬毒的透骨钉，杀人于无形之中。
+            </div>
+            
+            <div class="business-card">
+                <div class="card-title">业务联系</div>
+                <div class="card-content">请登录熊猫熊猫你为什么叫滚滚查看</div>
+                <div class="card-codes">
+                    <div class="code-item">暗号:</div>
+                    <div class="code-item">853=315</div>
+                    <div class="code-item">769=154</div>
+                    <div class="code-item">541=104</div>
+                    <div class="code-item code-question">836=?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

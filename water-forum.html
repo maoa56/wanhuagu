@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注水论坛 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .site-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-text {
+            font-size: 12px;
+            color: #666;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-text {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .page-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .forum-post {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .post-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .post-author {
+            color: #333;
+        }
+        
+        .post-time {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .forum-post {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .post-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .post-title {
+            flex: 1;
+        }
+        
+        .post-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .post-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .post-content {
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-top: 0;
+        }
+        
+        .post-content.expanded {
+            max-height: 600px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .post-author {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .post-text {
+            margin-bottom: 15px;
+        }
+        
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .comment {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .site-name {
+                font-size: 18px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .page-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="site-name">万花谷搜索系统</div>
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">春暖花花论坛</div>
+            
+            <div class="welcome-text">欢迎光临<span class="highlight-text">苏清辞</span>登录论坛</div>
+            
+            <div class="forum-post">
+                <div class="post-header" onclick="togglePost(this)">
+                    <div class="post-title">好想谈恋爱，有没有花花也想一起开花的</div>
+                    <div class="post-arrow">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-author">我要开花</div>
+                    <div class="post-text">我要开花~我要发芽~有没有情缘缘看看我~</div>
+                    <div class="comments-section">
+                        <div class="comment">
+                            <div class="comment-author">花痴小花</div>
+                            <div class="comment-text">我也想要情缘缘，今天来的五毒教的姐姐好好看呜呜呜呜呜</div>
+                            <div class="comment" style="margin-top: 10px;">
+                                <div class="comment-author">八卦小能手</div>
+                                <div class="comment-text">那你完了，我看到她给玉贤老师一个香囊，玉贤老师收下了，还是有特殊味道的香囊</div>
+                                <div class="comment" style="margin-top: 10px;">
+                                    <div class="comment-author">震惊小花</div>
+                                    <div class="comment-text">什么！怎么这样啊！还有特殊香味吗？</div>
+                                    <div class="comment" style="margin-top: 10px;">
+                                        <div class="comment-author">嗅觉达人</div>
+                                        <div class="comment-text">具体问不出来，应该是毒龙花的味道吧，还有啥别的味道被毒龙花的味道盖住了</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forum-post">
+                <div class="post-header" onclick="togglePost(this)">
+                    <div class="post-title">听说了吗竹林那边的事情……</div>
+                    <div class="post-arrow">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-author">正义在我脑中回荡</div>
+                    <div class="post-text">最新消息竹林那边出大事故了，好像跟贵宾有关……</div>
+                    <div class="comments-section">
+                        <div class="comment">
+                            <div class="comment-author">普通弟子</div>
+                            <div class="comment-text">好像那边被封锁了，普通弟子应该过不去吧</div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">知情人士</div>
+                            <div class="comment-text">应该得相关人士才能过去了解吧</div>
+                            <div class="comment" style="margin-top: 10px;">
+                                <div class="comment-author">神秘人</div>
+                                <div class="comment-text">你想要知道详情吗？我弄到了监控的密码：8=2,9=1,1=0,2=0,8702476=？</div>
+                                <div class="comment" style="margin-top: 10px;">
+                                    <div class="comment-author">好奇宝宝</div>
+                                    <div class="comment-text">好好好，密码应该是7位数字</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forum-post">
+                <div class="post-header" onclick="togglePost(this)">
+                    <div class="post-title">绝密！苏师兄竟然……</div>
+                    <div class="post-arrow">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-author">八卦小能手</div>
+                    <div class="post-text">小道消息得到的，苏清辞师兄之前好像弄丢过醉魂草和我们谷的部分绝密信息</div>
+                    <div class="comments-section">
+                        <div class="comment">
+                            <div class="comment-author">知情人士</div>
+                            <div class="comment-text">好像是他们亲传弟子知道的知识吧，反正挺严重的听说还被师父罚了</div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">目击者</div>
+                            <div class="comment-text">告诉你们这个事情跟今天来的玉贤老师也有关系，我看到过两个人吵架，好像说了什么"合作","不会再帮你"啥的，太远了我没听清</div>
+                            <div class="comment" style="margin-top: 10px;">
+                                <div class="comment-author">震惊小花</div>
+                                <div class="comment-text">天哪这么劲爆！</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forum-post">
+                <div class="post-header" onclick="togglePost(this)">
+                    <div class="post-title">分享花花的小日常</div>
+                    <div class="post-arrow">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-author">美丽的盆栽心情好</div>
+                    <div class="post-text">今天学习了《毒经》内容，知道了更多草药的详细用法，原来醉魂草搭配断魂花可制成慢性毒药，服用后一小时内无明显症状，最终会因经脉堵塞而死，太可怕了，怪不得要管制。</div>
+                    <div class="comments-section">
+                        <div class="comment">
+                            <div class="comment-author">药草达人</div>
+                            <div class="comment-text">你好好学吧，你知不知道学到后面还能有克制五毒蛊术的方法，那部分超级难</div>
+                            <div class="comment" style="margin-top: 10px;">
+                                <div class="comment-author">好奇宝宝</div>
+                                <div class="comment-text">那不是只有亲传弟子才能学的吗？平常花花的教材中没有这部分的</div>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">送茶小弟子</div>
+                            <div class="comment-text">今天苏清辞师兄让我给玉贤老师送茶来着，桌子上面就有醉魂草和断魂花，我是不是需要提醒提醒师兄呀，这个很危险</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forum-post">
+                <div class="post-header" onclick="togglePost(this)">
+                    <div class="post-title">今天来的贵宾好像有瓜哦</div>
+                    <div class="post-arrow">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-author"><strong>咪咪咪</strong></div>
+                    <div class="post-text">我今天路过小树林的时候看见天策府的帅哥哥好像在打架，他们好像往客房那边去了，有人知道咋回事吗？</div>
+                    <div class="comments-section">
+                        <div class="comment">
+                            <div class="comment-author">吃瓜群众1</div>
+                            <div class="comment-text">是不是和唐家堡的贵客打架呀，他们在入口就吵架来着，说是不让带危险武器进去，结果最后还是带进去了，说是家规武器不能离手</div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">吃瓜群众2</div>
+                            <div class="comment-text">好离谱，怎么外面的人都奇奇怪怪的</div>
+                            <div class="comment" style="margin-top: 10px;">
+                                <div class="comment-author">八卦达人</div>
+                                <div class="comment-text">听说来的玉贤老师瓜也很多，外面风评很不好</div>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">目击者</div>
+                            <div class="comment-text">我看到了！他们在客房外面也打架了，蓝色的人影攻击了红色的人影然后消失了</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function togglePost(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.post-arrow');
+            const isExpanded = content.classList.contains('expanded');
+            
+            // 如果当前帖子已展开，直接收起
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('expanded');
+                return;
+            }
+            
+            // 如果当前帖子未展开，先关闭所有已展开的帖子，再展开当前帖子
+            const allContents = document.querySelectorAll('.post-content');
+            const allArrows = document.querySelectorAll('.post-arrow');
+            
+            allContents.forEach(content => content.classList.remove('expanded'));
+            allArrows.forEach(arrow => arrow.classList.remove('expanded'));
+            
+            content.classList.add('expanded');
+            arrow.classList.add('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杀手的职责 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000080;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="40" rx="5" fill="rgba(0,0,0,0.3)"/><rect x="45" y="20" width="10" height="20" fill="rgba(0,0,0,0.3)"/><circle cx="50" cy="75" r="5" fill="rgba(0,0,0,0.3)"/></svg>');
+            background-repeat: repeat;
+            background-size: 150px;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            border: 2px solid #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #ff4500;
+        }
+        
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .failure-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+        }
+        
+        .button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">杀手的职责</div>
+        <div class="content">
+            <p>作为唐门暗影杀手，任务成功是我唯一的追求，玉贤手里面有《玉衡秘卷》就是他唯一的错。</p>
+            <p>潜伏跟踪的日子里，我每天都在模拟刺杀场景，生怕出现一丝差错。与萧策的争斗是我唯一的意外，我在竹林整理千机匣时刚好碰见了萧策巡逻，也许是因为我身为杀手，让天策府对我有所戒备，我只能约玉贤在竹林里面会面。</p>
+            <p>发射暗器的那一刻，我心中没有丝毫犹豫，只有精准命中目标的快意。看着玉贤倒下的瞬间，我仿佛已经看到了师门长辈赞许的目光，想象着回到唐门后接受嘉奖的场景，心中满是骄傲。</p>
+            <p>现在的我，只想着尽快找到秘卷，然后顺利返回唐门复命。我不知道我的暗器有没有命中玉贤，留给我的时间不多了，我需要抓紧完成任务回去复命。</p>
+        </div>
+        <div class="failure-text">追凶失败，请再仔细找找线索吧</div>
+        <a href="index.html" class="button">返回主页</a>
+    </div>
+    
+    <script>
+        // 页面加载时清除登录状态
+        window.onload = function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isVisitor');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天才的堕落 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #2e8b57;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50 20C35 20 20 35 20 50s15 30 30 30 30-15 30-30S65 20 50 20zm0 50c-11.05 0-20-8.95-20-20s8.95-20 20-20 20 8.95 20 20-8.95 20-20 20z" fill="rgba(0,0,0,0.2)"/></svg>');
+            background-repeat: repeat;
+            background-size: 200px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            border: 2px solid #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #ffff00;
+        }
+        
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .success-text {
+            font-size: 28px;
+            font-weight: bold;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            color: #ffff00;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        .button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+        }
+        
+        .button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">天才的堕落</div>
+        <div class="content">
+            <p>我从未想过，自己精心培育的草药，有一天会被人用来作恶，而这个人，正是隐元会密探玉贤。</p>
+            <p>三个月前，谷中培育的"醉魂草"突然少了半株。这种草药性烈，少量可安神，过量则会让人陷入昏迷，若搭配其他药材，更能炼制出令人失智的迷药。我心中生疑，暗中追查，终于在药庐后的枯井里发现了残留的药渣，旁边还掉着一枚隐元会的令牌——那是玉贤的信物。</p>
+            <p>我找到玉贤对质，他起初还想狡辩，见我拿出药渣和令牌，便索性撕破了伪装。他笑着说，那些醉魂草被他用来迷晕了谷外几个富户，抢走了钱财，更让我愤怒的是，他竟偷翻了我的书房，拿走了记载着克制五毒蛊术的方法，他威胁我如果我说出去，一切的职责都是由于我监管不力造成的，我没有办法只能替他瞒了下来。</p>
+            <p>今天他竟然又来找我想要更稳定的合作，我不能放任这种毒瘤存在于世，也是为了弥补我之前的错，我终于迈出了这一步。</p>
+            <p>《毒经》上面标注着醉魂草的另一种用法——搭配"断魂花"可制成慢性毒药，服用后两时内无明显症状，最终会因经脉堵塞而死，且死后不易被察觉。我制作了专门的药茶让其他弟子送给玉贤，我知道用毒杀人违背了师父的教诲，可我实在找不到其他办法，就让我用往后余生承担这样的罪责吧。</p>
+        </div>
+        <div class="success-text">追凶成功，凶手已经伏法，感谢你火眼金睛的决断</div>
+        <a href="index.html" class="button">返回主页</a>
+    </div>
+    
+    <script>
+        // 页面加载时清除登录状态
+        window.onload = function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isVisitor');
+        };
+    </script>
+</body>
+</html>

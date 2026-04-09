@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物招领 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .item-header {
+            padding: 15px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .item-header:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .item-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .item-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .item-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .item-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 0 15px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .item-details.expanded {
+            max-height: 500px;
+            padding: 15px;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #000;
+        }
+        
+        .comments-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .comment {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .comment-content {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .reply {
+            margin-left: 20px;
+            margin-top: 8px;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .item-title {
+                font-size: 14px;
+            }
+            
+            .detail-item {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">失物招领</div>
+            
+            <div class="item-list">
+                <div class="item-header" onclick="toggleItem('item1')">
+                    <div class="item-title">透骨钉</div>
+                    <div class="item-arrow" id="arrow1">▼</div>
+                </div>
+                <div class="item-details" id="item1">
+                    <div class="detail-item">
+                        <span class="detail-label">发布人：</span>我是可爱小花花
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失物品：</span>透骨钉
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失描述：</span>我今天路过客房后面看到地面上有这个钉子，谁知道这是谁掉落的呀？不会是哪个贵宾的吧？
+                    </div>
+                    <div class="comments-section">
+                        <div class="comments-title">留言回复：</div>
+                        <div class="comment">
+                            <div class="comment-author">路人甲</div>
+                            <div class="comment-content">我好像看到今天来的唐家堡贵宾有这个东西，我记得好像叫……唐影？</div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">路人乙</div>
+                            <div class="comment-content">真的吗？今天竹林那边好像也有这个钉子掉在地上，不会吧……</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item-header" onclick="toggleItem('item2')">
+                    <div class="item-title">天策军刺</div>
+                    <div class="item-arrow" id="arrow2">▼</div>
+                </div>
+                <div class="item-details" id="item2">
+                    <div class="detail-item">
+                        <span class="detail-label">发布人：</span>清洁工大妈
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失物品：</span>天策军刺碎片
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失描述：</span>我在竹林前面的树林看到的这个碎片，今天负责警卫的是天策府吧，有谁的军刺坏了吗？
+                    </div>
+                    <div class="comments-section">
+                        <div class="comments-title">留言回复：</div>
+                        <div class="comment">
+                            <div class="comment-author">卫兵丙</div>
+                            <div class="comment-content">你可以问问今天负责警卫的队长萧策</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item-header" onclick="toggleItem('item3')">
+                    <div class="item-title">毒龙花</div>
+                    <div class="item-arrow" id="arrow3">▼</div>
+                </div>
+                <div class="item-details" id="item3">
+                    <div class="detail-item">
+                        <span class="detail-label">发布人：</span>倒霉的看花人
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失物品：</span>毒龙花
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">丢失描述：</span>救命啊！师兄让我看好毒龙花的试验田，结果我刚刚过去看少了几朵花，我会被师兄薅秃假发的，到底是谁偷了我的花啊，重金求个线索！！！
+                    </div>
+                    <div class="comments-section">
+                        <div class="comments-title">留言回复：</div>
+                        <div class="comment">
+                            <div class="comment-author">师姐丁</div>
+                            <div class="comment-content">太可怜了，今天人这么多，也不一定是咱们自己人偷的，说不定是外面的贵宾觉得好看偷走了。</div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">师弟戊</div>
+                            <div class="comment-content">今天来的有五毒教的，你要不去问问五毒教的姐姐看看她那里有没有种子？</div>
+                            <div class="reply">
+                                <div class="comment-author">倒霉的看花人</div>
+                                <div class="comment-content">我觉得这个可行，我悄悄的去问问她</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleItem(itemId) {
+            const item = document.getElementById(itemId);
+            const arrow = document.getElementById('arrow' + itemId.slice(-1));
+            
+            item.classList.toggle('expanded');
+            arrow.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞不出的蝴蝶 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #4b0082;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50 10C30 10 10 30 10 50s20 40 40 40 40-20 40-40S70 10 50 10zm0 70c-16.57 0-30-13.43-30-30S33.43 20 50 20s30 13.43 30 30-13.43 30-30 30z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-repeat: repeat;
+            background-size: 200px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            border: 2px solid #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #ff69b4;
+        }
+        
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .failure-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+        }
+        
+        .button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">飞不出的蝴蝶</div>
+        <div class="content">
+            <p>师姐出事的那一刻，我心中只剩下复仇的念头。曾经，我以为五毒的蛊术是用来守护的，可玉贤的所作所为让我明白，对恶人仁慈，就是对自己残忍。</p>
+            <p>他毁了师姐的一生，毁了五毒教的蛊池，这种人，不配活在世上。赠送香囊给玉贤时，我心中充满了厌恶。看着他贪婪的嘴脸，我真想立刻催动蛊虫，让他当场死去。</p>
+            <p>可我不能冲动，我必须确保自己能全身而退，否则，我死了，谁来照顾师姐？谁来守护五毒教？我只能强压下心中的恨意，脸上挤出谦卑的笑容，看着他将藏着死神的香囊戴在身上。</p>
+            <p>吹奏催蛊笛的时候，我的手没有一丝颤抖。玉贤偷走金蚕蛊母，污染蛊池，他早就该想到会有这么一天。看到玉贤的尸体时，我心中没有一丝愧疚，只有解脱。</p>
+            <p>他终于死了，师姐的仇报了，那些枉死的蛊虫也能安息了。我不知道是不是我杀死的玉贤，他的身上好像没有发现我的锦囊，但是……这不重要了，玉贤死了，我的目的终于达成了。</p>
+        </div>
+        <div class="failure-text">追凶失败，请再仔细找找线索吧</div>
+        <a href="index.html" class="button">返回主页</a>
+    </div>
+    
+    <script>
+        // 页面加载时清除登录状态
+        window.onload = function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isVisitor');
+        };
+    </script>
+</body>
+</html>

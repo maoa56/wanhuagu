@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监控回放 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+        
+        .location-list {
+            margin-top: 30px;
+        }
+        
+        .location-item {
+            padding: 15px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .location-item:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .location-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .location-title {
+            font-weight: bold;
+        }
+        
+        .location-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .location-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .location-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .location-content.expanded {
+            max-height: 300px;
+        }
+        
+        .monitoring-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .monitoring-time {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">监控回放</div>
+            
+            <div class="paragraph">
+                欢迎来到监控回放系统。这里记录了万花谷各个区域的监控录像，您可以查看不同地点的详细监控信息。
+            </div>
+            
+            <div class="location-list">
+                <div class="location-item" onclick="toggleLocation(this)">
+                    <div class="location-header">
+                        <div class="location-title">会客大厅</div>
+                        <div class="location-arrow">▼</div>
+                    </div>
+                    <div class="location-content">
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">8:00</span>
+                            众人陆续抵达会客大厅开始活动
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">10:00</span>
+                            曲蛊月与玉贤交谈，好像给玉贤了什么东西
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">11:30</span>
+                            唐影离开会客大厅
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:00</span>
+                            众人陆续离开会客大厅
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-item" onclick="toggleLocation(this)">
+                    <div class="location-header">
+                        <div class="location-title">客房</div>
+                        <div class="location-arrow">▼</div>
+                    </div>
+                    <div class="location-content">
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">8:00</span>
+                            众人均经过客房去会客大厅
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:00</span>
+                            玉贤、曲蛊月等人返回
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:20</span>
+                            客房外空地萧策与唐影在打斗
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">13:50</span>
+                            唐影返回，疑似扔了字条进入客房
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:00</span>
+                            万花弟子给玉贤送茶，送茶后离开
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:30</span>
+                            玉贤离开客房
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:40</span>
+                            曲蛊月离开客房
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-item" onclick="toggleLocation(this)">
+                    <div class="location-header">
+                        <div class="location-title">弟子住所</div>
+                        <div class="location-arrow">▼</div>
+                    </div>
+                    <div class="location-content">
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">7:30</span>
+                            苏清辞与玉贤在苏清辞住处争吵
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">8:00</span>
+                            弟子们陆续出发前往会客大厅
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:00</span>
+                            弟子们陆续返回
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:30</span>
+                            苏清辞在调制什么药材
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">13:30</span>
+                            苏清辞制作药茶，并将药茶给了一名万花弟子
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-item" onclick="toggleLocation(this)">
+                    <div class="location-header">
+                        <div class="location-title">竹林</div>
+                        <div class="location-arrow">▼</div>
+                    </div>
+                    <div class="location-content">
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">11:40</span>
+                            唐影出现在竹林，疑似整理武器
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">11:50</span>
+                            萧策路过竹林，似乎在于唐影对话，发生争吵
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">12:00</span>
+                            萧策与唐影在竹林打架，边打边消失在往客房的方向
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:00</span>
+                            唐影进入竹林
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:35</span>
+                            玉贤进入竹林
+                        </div>
+                        <div class="monitoring-item">
+                            <span class="monitoring-time">14:45</span>
+                            曲蛊月进入竹林
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                有问题可以致电万花谷安保中心：400-3829-5678
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleLocation(locationItem) {
+            const content = locationItem.querySelector('.location-content');
+            const arrow = locationItem.querySelector('.location-arrow');
+            const isExpanded = content.classList.contains('expanded');
+            
+            // 如果当前地点已展开，直接收起
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('expanded');
+                return;
+            }
+            
+            // 如果当前地点未展开，先关闭所有已展开的地点，再展开当前地点
+            const allContents = document.querySelectorAll('.location-content');
+            const allArrows = document.querySelectorAll('.location-arrow');
+            
+            allContents.forEach(content => content.classList.remove('expanded'));
+            allArrows.forEach(arrow => arrow.classList.remove('expanded'));
+            
+            content.classList.add('expanded');
+            arrow.classList.add('expanded');
+        }
+    </script>
+</body>
+</html>

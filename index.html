@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* 声明弹窗样式 */
+        .disclaimer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(230, 230, 250, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        .disclaimer-container {
+            max-width: 800px;
+            padding: 40px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            text-align: left;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .disclaimer-text {
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        
+        .disclaimer-author {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 14px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .disclaimer-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .disclaimer-container {
+                padding: 30px 20px;
+                font-size: 14px;
+            }
+            
+            .disclaimer-text {
+                font-size: 14px;
+            }
+            
+            .disclaimer-author {
+                position: static;
+                text-align: center;
+                margin-top: 30px;
+                font-size: 12px;
+            }
+            
+            .disclaimer-hint {
+                position: static;
+                text-align: center;
+                margin-top: 15px;
+                font-size: 12px;
+            }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .site-name {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .search-section {
+            margin-bottom: 30px;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .search-button {
+            padding: 12px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+        }
+        
+        .search-hint {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .module {
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .module:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .module-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .module-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .login-form {
+            margin-top: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 8px;
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .visitor-login {
+            font-size: 12px;
+            color: #666;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .visitor-link {
+            color: #0000ff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #e6e6fa;
+            padding: 30px;
+            border: 2px solid #000;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .visitor-link:hover {
+            color: #333;
+        }
+        
+        .module-locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .module-locked:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: none;
+        }
+        
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .site-name {
+                font-size: 20px;
+            }
+            
+            .search-input {
+                font-size: 14px;
+            }
+            
+            .search-button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .module-title {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 声明弹窗 -->
+    <div class="disclaimer-overlay" id="disclaimerOverlay" onclick="closeDisclaimer()">
+        <div class="disclaimer-container">
+            <div class="disclaimer-text">
+                <p>本游戏是亲友间的娱乐产物，依托于《剑侠情缘网络版三》游戏的二创，部分名词来源于原游戏。所有内容纯属虚构，不针对任何现实中的事件及人物，没有任何的隐喻、映射。</p>
+                <p>游戏内容为本人第一次探索制作，很多地方都比较粗糙，游玩后欢迎提供宝贵的意见。</p>
+                <p>最后希望大家能喜欢我做的小游戏，有一个良好的游戏体验。</p>
+            </div>
+            <div class="disclaimer-author">——一只叫喵喵的小叽</div>
+            <div class="disclaimer-hint">点击任意位置进入游戏</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="site-name">万花谷信息中心</div>
+        
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="输入关键词搜索..." id="searchInput">
+                <button class="search-button" onclick="search()">搜索</button>
+            </div>
+            <div class="search-hint">提示：输入关键词（如"万花谷"）进行搜索</div>
+        </div>
+        
+        <div class="modules-grid">
+            <div class="module" onclick="showLoginModal()">
+                <div class="module-icon">🔐</div>
+                <div class="module-title">用户登录</div>
+            </div>
+            <div class="module" onclick="openModule('hot-activities')">
+                <div class="module-icon">🎉</div>
+                <div class="module-title">热门活动</div>
+            </div>
+            <div class="module" onclick="openModule('specialty-encyclopedia')">
+                <div class="module-icon">🌿</div>
+                <div class="module-title">特产百科</div>
+            </div>
+            <div class="module module-locked" id="monitoring-module">
+                <div class="module-icon">📹</div>
+                <div class="module-title">监控回放</div>
+                <div class="locked-overlay">未解锁</div>
+                <div class="password-input-container" id="monitoring-password-container" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">请输入密码</label>
+                        <input type="password" class="form-input" id="monitoringPassword" placeholder="输入密码">
+                    </div>
+                    <button class="login-button" onclick="checkMonitoringPassword()">解锁</button>
+                </div>
+            </div>
+            <div class="module module-locked" id="water-forum-module">
+                <div class="module-icon">💬</div>
+                <div class="module-title">注水论坛</div>
+                <div class="locked-overlay">未解锁</div>
+            </div>
+            <div class="module module-locked" id="lost-and-found-module">
+                <div class="module-icon">📦</div>
+                <div class="module-title">失物招领</div>
+                <div class="locked-overlay">未解锁</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 登录弹窗 -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+            <div class="modal-title">用户登录</div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label">账号</label>
+                    <input type="text" class="form-input" id="username" placeholder="输入账号">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <input type="password" class="form-input" id="password" placeholder="输入密码">
+                </div>
+                <button class="login-button" onclick="login()">登录</button>
+                <div class="visitor-login">
+                    累计访问828人，<span class="visitor-link" onclick="visitorLogin()">游客登录</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function search() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (keyword) {
+                const encodedKeyword = encodeURIComponent(keyword);
+                window.location.href = `search.html?keyword=${encodedKeyword}`;
+            }
+        }
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                search();
+            }
+        });
+        
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (username === 'suqingci' && password === 'PENZAI') {
+                alert('登录成功！已解锁注水论坛、失物招领模块和监控回放模块密码输入');
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('isVisitor', 'false');
+                unlockModule('water-forum-module');
+                unlockModule('lost-and-found-module');
+                document.getElementById('monitoring-password-container').style.display = 'block';
+                const module = document.getElementById('monitoring-module');
+                const overlay = module.querySelector('.locked-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+            } else {
+                alert('账号或密码错误！');
+            }
+        }
+        
+        function visitorLogin() {
+            alert('游客登录成功！已解锁失物招领模块');
+            localStorage.setItem('isVisitor', 'true');
+            localStorage.setItem('isLoggedIn', 'false');
+            unlockModule('lost-and-found-module');
+        }
+        
+        function checkMonitoringPassword() {
+            const password = document.getElementById('monitoringPassword').value.trim();
+            
+            if (password === '2010001') {
+                alert('解锁成功！监控回放模块已解锁');
+                const module = document.getElementById('monitoring-module');
+                module.classList.remove('module-locked');
+                document.getElementById('monitoring-password-container').style.display = 'none';
+                module.onclick = function() {
+                    window.location.href = 'monitoring-playback.html';
+                };
+            } else {
+                alert('密码错误，请重试');
+            }
+        }
+        
+        function unlockModule(moduleId) {
+            const module = document.getElementById(moduleId);
+            if (module) {
+                module.classList.remove('module-locked');
+                const overlay = module.querySelector('.locked-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+                
+                if (moduleId === 'water-forum-module') {
+                    module.onclick = function() {
+                        window.location.href = 'water-forum.html';
+                    };
+                } else if (moduleId === 'lost-and-found-module') {
+                    module.onclick = function() {
+                        window.location.href = 'lost-and-found.html';
+                    };
+                }
+            }
+        }
+        
+        function openModule(moduleName) {
+            window.location.href = `${moduleName}.html`;
+        }
+        
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        }
+        
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const isVisitor = localStorage.getItem('isVisitor') === 'true';
+            
+            if (isLoggedIn) {
+                unlockModule('water-forum-module');
+                unlockModule('lost-and-found-module');
+                document.getElementById('monitoring-password-container').style.display = 'block';
+                const module = document.getElementById('monitoring-module');
+                const overlay = module.querySelector('.locked-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+            } else if (isVisitor) {
+                unlockModule('lost-and-found-module');
+            }
+        }
+        
+        function closeDisclaimer() {
+            document.getElementById('disclaimerOverlay').style.display = 'none';
+        }
+        
+        window.onload = function() {
+            checkLoginStatus();
+        }
+    </script>
+</body>
+</html>

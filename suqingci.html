@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏清辞 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+        
+        .memo-container {
+            margin-top: 40px;
+        }
+        
+        .memo-header {
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .memo-header:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .memo-title {
+            font-weight: bold;
+        }
+        
+        .memo-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .memo-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .memo-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .memo-content.expanded {
+            max-height: 200px;
+            padding: 20px;
+        }
+        
+        .memo-text {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">苏清辞</div>
+            
+            <div class="paragraph">
+                苏清辞，35岁，万花谷药圣孙思邈座下大弟子，雅集品鉴会负责人，终日与药庐、丹炉为伴，指尖沾染的是草木清香，心中记挂的是"悬壶济世"。
+            </div>
+            
+            <div class="paragraph">
+                熟练应用各类药草，有自己的专属药庐，是万花谷中医术和毒术的顶尖高手。
+            </div>
+            
+            <div class="memo-container">
+                <div class="memo-header" onclick="toggleMemo()">
+                    <div class="memo-title">备忘录</div>
+                    <div class="memo-arrow" id="memoArrow">▼</div>
+                </div>
+                <div class="memo-content" id="memoContent">
+                    <div class="memo-text">
+                        最近事情有点多，把账号密码记在这里<br>
+                        账号是名字拼音<br>
+                        密码：LAGVWE，←4
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMemo() {
+            const content = document.getElementById('memoContent');
+            const arrow = document.getElementById('memoArrow');
+            
+            content.classList.toggle('expanded');
+            arrow.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

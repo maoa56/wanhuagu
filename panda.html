@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熊猫熊猫你为什么叫滚滚 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        
+        /* 熊猫页面样式 */
+        #pandaPage {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        .panda-image {
+            width: 200px;
+            height: 200px;
+            background-color: #000;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .panda-ear {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #000;
+            border-radius: 50%;
+            top: -10px;
+        }
+        
+        .panda-ear.left {
+            left: 10px;
+        }
+        
+        .panda-ear.right {
+            right: 10px;
+        }
+        
+        .panda-eye {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #000;
+            border-radius: 50%;
+            top: 60px;
+        }
+        
+        .panda-eye.left {
+            left: 40px;
+        }
+        
+        .panda-eye.right {
+            right: 40px;
+        }
+        
+        .panda-nose {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #000;
+            border-radius: 50%;
+            top: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .panda-mouth {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            border-bottom: 5px solid #000;
+            border-radius: 50%;
+            top: 130px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .password-form {
+            text-align: center;
+        }
+        
+        .password-input {
+            padding: 10px;
+            border: 2px solid #000;
+            background-color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            width: 200px;
+            margin-bottom: 15px;
+        }
+        
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+        }
+        
+        /* 夜店页面样式 */
+        #clubPage {
+            background-color: #1a1a2e;
+            color: #fff;
+            display: none;
+            min-height: 100vh;
+        }
+        
+        .club-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 40px;
+        }
+        
+        .club-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: neon 1.5s ease-in-out infinite alternate;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #00f,
+                0 0 20px #00f,
+                0 0 25px #00f,
+                0 0 30px #00f,
+                0 0 35px #00f;
+        }
+        
+        @keyframes neon {
+            from {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 15px #00f,
+                    0 0 20px #00f,
+                    0 0 25px #00f,
+                    0 0 30px #00f,
+                    0 0 35px #00f;
+            }
+            to {
+                text-shadow: 
+                    0 0 10px #fff,
+                    0 0 20px #fff,
+                    0 0 30px #00f,
+                    0 0 40px #00f,
+                    0 0 50px #00f,
+                    0 0 60px #00f,
+                    0 0 70px #00f;
+            }
+        }
+        
+        .club-slogan {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #00ffff;
+        }
+        
+        .staff-section {
+            margin-bottom: 40px;
+        }
+        
+        .staff-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #ff00ff;
+        }
+        
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        
+        .staff-card {
+            padding: 20px;
+            border: 2px solid #00ffff;
+            background-color: rgba(0, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .staff-photo {
+            width: 80px;
+            height: 120px;
+            background-color: #000;
+            margin: 0 auto 15px;
+            border: 2px solid #00ffff;
+        }
+        
+        .staff-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .staff-status {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .contact-button {
+            display: block;
+            margin: 0 auto 40px;
+            padding: 15px 30px;
+            background-color: #ff66ff;
+            color: #000;
+            border: 2px solid #ff66ff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 20px rgba(255, 102, 255, 0.8);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* 对话框样式 */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chat-content {
+            background-color: #1a1a2e;
+            padding: 30px;
+            border: 2px solid #00ffff;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .chat-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ffff;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        
+        .chat-message.right {
+            background-color: rgba(0, 255, 255, 0.4);
+            color: #fff;
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+        
+        .chat-message.left {
+            background-color: rgba(255, 0, 255, 0.4);
+            color: #fff;
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+        
+        .chat-status {
+            text-align: center;
+            color: #ccc;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .close-chat {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media (max-width: 480px) {
+            .club-title {
+                font-size: 28px;
+            }
+            
+            .staff-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .panda-image {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">返回主页</a>
+    
+    <!-- 熊猫页面 -->
+    <div id="pandaPage">
+        <div class="panda-image">
+            <div class="panda-ear left"></div>
+            <div class="panda-ear right"></div>
+            <div class="panda-eye left"></div>
+            <div class="panda-eye right"></div>
+            <div class="panda-nose"></div>
+            <div class="panda-mouth"></div>
+        </div>
+        <div class="password-form">
+            <input type="password" class="password-input" id="clubPassword" placeholder="请输入密码">
+            <br>
+            <button class="submit-button" onclick="checkClubPassword()">进入</button>
+        </div>
+    </div>
+    
+    <!-- 夜店页面 -->
+    <div id="clubPage">
+        <div class="container">
+            <div class="club-header">
+                <div class="club-title">唐家堡夜店服务</div>
+                <div class="club-slogan">没有什么是我们做不到的，唐家堡助力你的梦想，请点击下方联系我们。</div>
+            </div>
+            
+            <div class="staff-section">
+                <div class="staff-title">本月优秀员工</div>
+                <div class="staff-grid">
+                    <div class="staff-card">
+                        <div class="staff-photo"></div>
+                        <div class="staff-name">唐背</div>
+                        <div class="staff-status">空闲</div>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-photo"></div>
+                        <div class="staff-name">唐影</div>
+                        <div class="staff-status">工作中</div>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-photo"></div>
+                        <div class="staff-name">唐好</div>
+                        <div class="staff-status">空闲</div>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-photo"></div>
+                        <div class="staff-name">唐帅</div>
+                        <div class="staff-status">空闲</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="contact-button" onclick="openChat()">联系我们</button>
+        </div>
+    </div>
+    
+    <!-- 聊天对话框 -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-content">
+            <div class="chat-title">客服对话</div>
+            <div class="chat-status">正在输入...</div>
+            <div class="chat-message right">现在可以雇佣哪些员工呀？</div>
+            <div class="chat-message left">稍等我为您查询下员工状态</div>
+            <div class="chat-status">正在查询...</div>
+            <div class="chat-message left">xxx - 可委托 - 空闲</div>
+            <div class="chat-message left">唐影 - 不可委托 - 万花谷夺取《玉衡秘卷》</div>
+            <div class="chat-message left">xxx - 不可委托 - 天策府偷赤兔幼崽</div>
+            <div class="chat-status">...</div>
+            <button class="close-chat" onclick="closeChat()">关闭对话</button>
+        </div>
+    </div>
+
+    <script>
+        function checkClubPassword() {
+            const password = document.getElementById('clubPassword').value;
+            if (password === '518') {
+                document.getElementById('pandaPage').style.display = 'none';
+                document.getElementById('clubPage').style.display = 'block';
+                document.body.style.backgroundColor = '#1a1a2e';
+            } else {
+                alert('密码错误，请重试');
+            }
+        }
+        
+        function openChat() {
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+        
+        function closeChat() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+        
+        document.getElementById('clubPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkClubPassword();
+            }
+        });
+    </script>
+</body>
+</html>

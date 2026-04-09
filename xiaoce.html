@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萧策 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+        
+        .password-section {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .password-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .password-hint {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .password-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .attendees-list {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .attendees-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .attendee-item {
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .attendee-info {
+            flex: 1;
+        }
+        
+        .attendee-name {
+            font-weight: bold;
+        }
+        
+        .attendee-risk {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">萧策</div>
+            
+            <div class="paragraph">
+                萧策，28岁，天策府参将，自十五岁投笔从戎，便将"忠君报国、护境安民"刻进了骨血里。
+            </div>
+            
+            <div class="paragraph">
+                本次雅集品剑会的护卫负责人，与苏清辞是旧识，携带物品为天策府长枪，以及辅助用的军刺。
+            </div>
+            
+            <div class="password-section">
+                <div class="password-title">参会人员名单</div>
+                <div class="password-hint">密码提示：军龄</div>
+                <input type="password" class="password-input" id="passwordInput" placeholder="请输入密码">
+                <button class="password-button" onclick="checkPassword()">查看名单</button>
+            </div>
+            
+            <div class="attendees-list" id="attendeesList">
+                <div class="attendees-title">参会人员名单</div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">唐影</div>
+                        <div class="attendee-risk">唐家堡 - 有前科需注意</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">曲蛊月</div>
+                        <div class="attendee-risk">五毒教 - 暂无风险</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">萧策</div>
+                        <div class="attendee-risk">天策府 - 暂无风险</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">叶疏寒</div>
+                        <div class="attendee-risk">藏剑山庄 - 暂无风险</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">玉贤</div>
+                        <div class="attendee-risk">隐元会 - 暂无风险</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">xxx</div>
+                        <div class="attendee-risk">xxx - xxx</div>
+                    </div>
+                </div>
+                <div class="attendee-item">
+                    <div class="attendee-info">
+                        <div class="attendee-name">...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const attendeesList = document.getElementById('attendeesList');
+            
+            if (password === '13') {
+                attendeesList.style.display = 'block';
+            } else {
+                alert('密码错误，请重试');
+            }
+        }
+    </script>
+</body>
+</html>

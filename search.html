@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .site-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .search-results {
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .search-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .result-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .result-item:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .result-description {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .site-name {
+                font-size: 18px;
+            }
+            
+            .search-title {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="site-name">万花谷搜索系统</div>
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="search-results">
+            <div class="search-title" id="searchTitle">搜索结果</div>
+            <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const keywordMap = {
+            '万花谷': {
+                title: '万花谷',
+                description: '神秘的山谷，隐藏着古老的秘密和珍贵的花卉资源',
+                url: 'wuhuagu.html'
+            },
+            '苏清辞': {
+                title: '苏清辞',
+                description: '万花谷药圣孙思邈座下大弟子，雅集品鉴会负责人',
+                url: 'suqingci.html'
+            },
+            '萧策': {
+                title: '萧策',
+                description: '天策府参将，本次雅集品剑会的护卫负责人',
+                url: 'xiaoce.html'
+            },
+            '唐影': {
+                title: '唐影',
+                description: '唐门暗影堂的顶尖杀手',
+                url: 'tangying.html'
+            },
+            '熊猫熊猫你为什么叫滚滚': {
+                title: '熊猫熊猫你为什么叫滚滚',
+                description: '唐家堡秘密服务入口',
+                url: 'panda.html'
+            },
+            '曲蛊月': {
+                title: '曲蛊月',
+                description: '五毒教灵蛇使，精通养蛊与辨毒之术',
+                url: 'quguyue.html'
+            },
+            '噬心蛊': {
+                title: '噬心蛊',
+                description: '一种特殊的蛊虫，可以潜伏在人体呼吸道',
+                url: 'shixingu.html'
+            },
+            '隐元会': {
+                title: '隐元会',
+                description: '行事隐秘、架构严密的情报组织',
+                url: 'yinyuanhui.html'
+            },
+            '400-3829-5678': {
+                title: '万花谷安保中心',
+                description: '万花谷安保中心联系电话',
+                url: 'security-center.html'
+            },
+            '40038295678': {
+                title: '万花谷安保中心',
+                description: '万花谷安保中心联系电话',
+                url: 'security-center.html'
+            }
+        };
+        
+        function getSearchResults(keyword) {
+            const results = [];
+            const lowerKeyword = keyword.toLowerCase();
+            
+            // 精确匹配搜索
+            for (const [key, value] of Object.entries(keywordMap)) {
+                if (key.toLowerCase() === lowerKeyword) {
+                    results.push(value);
+                    break; // 只返回精确匹配的结果
+                }
+            }
+            
+            return results;
+        }
+        
+        function displayResults() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const keyword = urlParams.get('keyword') || '';
+            const results = getSearchResults(keyword);
+            
+            const titleElement = document.getElementById('searchTitle');
+            const container = document.getElementById('resultsContainer');
+            
+            titleElement.textContent = `搜索结果: "${keyword}"`;
+            
+            if (results.length === 0) {
+                alert('未搜索到该关键词，请再找找吧');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            container.innerHTML = '';
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.innerHTML = `
+                    <div class="result-title">${result.title}</div>
+                    <div class="result-description">${result.description}</div>
+                `;
+                div.onclick = () => window.location.href = result.url;
+                container.appendChild(div);
+            });
+        }
+        
+        displayResults();
+    </script>
+</body>
+</html>

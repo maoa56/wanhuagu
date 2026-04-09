@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万花谷安保中心 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .module {
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .module-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #e6e6fa;
+            padding: 30px;
+            border: 2px solid #000;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .case-item {
+            padding: 15px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .case-item:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .case-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .case-content {
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .case-content.expanded {
+            max-height: 400px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .loading {
+            font-style: italic;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">万花谷安保中心</div>
+            <div class="subtitle">保卫谷中安全是我们应该做的</div>
+            
+            <div class="modules-grid">
+                <div class="module" onclick="showHelpModal()">
+                    <div class="module-title">寻求帮助</div>
+                </div>
+                
+                <div class="module" onclick="showCaseModal()">
+                    <div class="module-title">案件列表</div>
+                </div>
+                
+                <div class="module" onclick="showClueModal()">
+                    <div class="module-title">线索提供</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 案件列表弹窗 -->
+    <div class="modal-overlay" id="caseModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCaseModal()">&times;</span>
+            <div class="modal-title">案件列表</div>
+            
+            <div class="loading">...</div>
+            
+            <div class="case-item" onclick="toggleCase(this)">
+                <div class="case-title">玉贤遇害事件</div>
+                <div class="case-content">
+                    今日下午15:30分，发现玉贤先生的尸体在竹林内，尸体发现时为平躺状态，疑似中毒身亡，体内检测到"醉魂草"残留，现场有打斗痕迹，疑似发生过搏斗，现场遗落"透骨钉"空壳，经检验有毒性残留。目前案件仍在调查中，欢迎向我们提供相关的线索。
+                </div>
+            </div>
+            
+            <div class="loading">...</div>
+        </div>
+    </div>
+    
+    <!-- 线索提供弹窗 -->
+    <div class="modal-overlay" id="clueModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeClueModal()">&times;</span>
+            <div class="modal-title">线索提供</div>
+            
+            <form id="clueForm">
+                <div class="form-group">
+                    <label class="form-label">本次案件的死者是</label>
+                    <select class="form-select" id="victim">
+                        <option value="玉贤">玉贤</option>
+                        <option value="曲蛊月">曲蛊月</option>
+                        <option value="苏清辞">苏清辞</option>
+                        <option value="小盆栽">小盆栽</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">凶手是</label>
+                    <select class="form-select" id="murderer">
+                        <option value="苏清辞">苏清辞</option>
+                        <option value="唐影">唐影</option>
+                        <option value="曲蛊月">曲蛊月</option>
+                        <option value="萧策">萧策</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">动机是</label>
+                    <select class="form-select" id="motive">
+                        <option value="委托">委托</option>
+                        <option value="仇杀">仇杀</option>
+                        <option value="看他不顺眼">看他不顺眼</option>
+                        <option value="受迫反抗">受迫反抗</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="submit-button" onclick="submitClue()">提交</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 感谢弹窗 -->
+    <div class="modal-overlay" id="thankModal">
+        <div class="modal-content">
+            <div class="modal-title">感谢您的线索提供</div>
+            <p style="margin-bottom: 20px;">感谢您的线索提供，我们将竭尽追击凶手</p>
+            <button class="submit-button" onclick="closeThankModal()">确定</button>
+        </div>
+    </div>
+    
+    <!-- 寻求帮助弹窗 -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeHelpModal()">&times;</span>
+            <div class="modal-title">寻求帮助</div>
+            <p>如有紧急情况，请直接拨打：400-3829-5678</p>
+            <p style="margin-top: 20px;">工作时间：24小时全天候服务</p>
+        </div>
+    </div>
+
+    <script>
+        // 案件列表相关
+        function showCaseModal() {
+            document.getElementById('caseModal').style.display = 'flex';
+        }
+        
+        function closeCaseModal() {
+            document.getElementById('caseModal').style.display = 'none';
+        }
+        
+        function toggleCase(caseItem) {
+            const content = caseItem.querySelector('.case-content');
+            content.classList.toggle('expanded');
+        }
+        
+        // 线索提供相关
+        function showClueModal() {
+            document.getElementById('clueModal').style.display = 'flex';
+        }
+        
+        function closeClueModal() {
+            document.getElementById('clueModal').style.display = 'none';
+        }
+        
+        let selectedVictim = '';
+        let selectedMurderer = '';
+        let selectedMotive = '';
+        
+        function submitClue() {
+            selectedVictim = document.getElementById('victim').value;
+            selectedMurderer = document.getElementById('murderer').value;
+            selectedMotive = document.getElementById('motive').value;
+            
+            closeClueModal();
+            document.getElementById('thankModal').style.display = 'flex';
+        }
+        
+        function closeThankModal() {
+            document.getElementById('thankModal').style.display = 'none';
+            
+            // 根据不同选项跳转到不同结局
+            if (selectedVictim === '玉贤' && selectedMurderer === '曲蛊月' && selectedMotive === '仇杀') {
+                // 飞不出的蝴蝶
+                window.location.href = 'endings1.html';
+            } else if (selectedVictim === '玉贤' && selectedMurderer === '唐影' && selectedMotive === '委托') {
+                // 杀手的职责
+                window.location.href = 'endings2.html';
+            } else if (selectedVictim === '玉贤' && selectedMurderer === '苏清辞' && selectedMotive === '受迫反抗') {
+                // 天才的堕落（唯一正确结局）
+                window.location.href = 'endings3.html';
+            } else {
+                // 迷雾未明
+                window.location.href = 'endings4.html';
+            }
+        }
+        
+        // 寻求帮助相关
+        function showHelpModal() {
+            document.getElementById('helpModal').style.display = 'flex';
+        }
+        
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+        
+        // 点击外部关闭弹窗
+        window.onclick = function(event) {
+            const modals = ['caseModal', 'clueModal', 'thankModal', 'helpModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

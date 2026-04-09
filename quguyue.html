@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曲蛊月 - 解谜游戏终端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6e6fa;
+            color: #000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 30px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.3);
+            line-height: 1.8;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+        
+        .items-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .items-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .item-list {
+            list-style-type: none;
+        }
+        
+        .item-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .item-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+        
+        .special-text {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .notebook-section {
+            margin-top: 40px;
+        }
+        
+        .notebook-header {
+            padding: 15px;
+            border: 2px solid #000;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .notebook-header:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .notebook-title {
+            font-weight: bold;
+        }
+        
+        .notebook-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .notebook-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .notebook-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .notebook-content.expanded {
+            max-height: 600px;
+            padding: 20px;
+        }
+        
+        .notebook-text {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .password-section {
+            margin-bottom: 20px;
+        }
+        
+        .password-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .password-button {
+            padding: 8px 16px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ff0000;
+            background-color: rgba(255, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">返回主页</a>
+        </div>
+        
+        <div class="content">
+            <div class="page-title">曲蛊月</div>
+            
+            <div class="paragraph">
+                曲蛊月，五毒教灵蛇使，自幼在苗疆万蛊窟长大，与蛊虫、毒草为伴，精通养蛊与辨毒之术，为五毒文化交流大使，呼吁世人正视五毒蛊术，没有坏的虫子，只有坏的人。
+            </div>
+            
+            <div class="items-section">
+                <div class="items-title">随身携带物品：</div>
+                <ul class="item-list">
+                    <li>一个笔记本</li>
+                    <li>五毒特有的蛇骨木笛子</li>
+                    <li>一个特殊花纹的香囊<span class="special-text">(你问我有没有带蛊虫？我怎么知道，我不敢碰她)</span></li>
+                </ul>
+            </div>
+            
+            <div class="notebook-section">
+                <div class="notebook-header" onclick="toggleNotebook()">
+                    <div class="notebook-title">笔记本</div>
+                    <div class="notebook-arrow" id="notebookArrow">▼</div>
+                </div>
+                <div class="notebook-content" id="notebookContent">
+                    <div class="notebook-text">
+                        尘封已久的记忆，我不想再回忆。<br>我最爱的东西
+                    </div>
+                    
+                    <div class="password-section">
+                        <label class="password-label">请输入密码：</label>
+                        <input type="text" class="password-input" id="notebookPassword" placeholder="单个汉字" maxlength="1">
+                        <button class="password-button" onclick="checkNotebookPassword()">解锁</button>
+                    </div>
+                    
+                    <div class="hidden-content" id="hiddenContent">
+                        他乔装成苗医潜入五毒教，谎称要"学习蛊术救人"，师姐心善，对他毫无防备，甚至带他参观了教内禁地——蛊池，那里养着五毒的镇教之宝"金蚕蛊母"。可我们万万没想到，他的目的竟是偷走金蚕蛊母，他趁我们不备，在蛊池中投入了掺有万花草药的粉末——那种草药能克制蛊虫，导致蛊池内的蛊虫大量死亡，师姐为了保护金蚕蛊母，强行催动内力净化蛊池，却被反噬，不仅容貌尽毁，修为也化为乌有，从此卧病在床，日夜承受蛊毒侵蚀的痛苦。我发誓，一定要让他血债血偿，用五毒最狠厉的"噬心蛊"，让他在痛苦中死去，为师姐报仇，也为枉死的蛊虫讨回公道。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNotebook() {
+            const content = document.getElementById('notebookContent');
+            const arrow = document.getElementById('notebookArrow');
+            
+            content.classList.toggle('expanded');
+            arrow.classList.toggle('expanded');
+        }
+        
+        function checkNotebookPassword() {
+            const password = document.getElementById('notebookPassword').value;
+            const hiddenContent = document.getElementById('hiddenContent');
+            
+            if (password === '蛊') {
+                hiddenContent.style.display = 'block';
+            } else {
+                alert('密码错误，请重试');
+            }
+        }
+        
+        document.getElementById('notebookPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkNotebookPassword();
+            }
+        });
+    </script>
+</body>
+</html>

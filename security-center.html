@@ -256,9 +256,9 @@
             <div class="loading">...</div>
             
             <div class="case-item" onclick="toggleCase(this)">
-                <div class="case-title">玉贤遇害事件</div>
+                <div class="case-title">竹林凶杀案</div>
                 <div class="case-content">
-                    今日下午15:30分，发现玉贤先生的尸体在竹林内，尸体发现时为平躺状态，疑似中毒身亡，体内检测到"醉魂草"残留，现场有打斗痕迹，疑似发生过搏斗，现场遗落"透骨钉"空壳，经检验有毒性残留。目前案件仍在调查中，欢迎向我们提供相关的线索。
+                    今日下午15:30分，发现一具尸体在竹林内，推测死亡时间在15:00至15:10之间，尸体发现时为平躺状态，疑似中毒身亡，体内检测到"醉魂草"残留，现场有打斗痕迹，疑似发生过搏斗，现场遗落"透骨钉"空壳，经检验有毒性残留。目前案件仍在调查中，欢迎向我们提供相关的线索。
                 </div>
             </div>
             
@@ -276,20 +276,20 @@
                 <div class="form-group">
                     <label class="form-label">本次案件的死者是</label>
                     <select class="form-select" id="victim">
+                        <option value="小盆栽">小盆栽</option>
+                        <option value="苏清辞">苏清辞</option>
                         <option value="玉贤">玉贤</option>
                         <option value="曲蛊月">曲蛊月</option>
-                        <option value="苏清辞">苏清辞</option>
-                        <option value="小盆栽">小盆栽</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">凶手是</label>
                     <select class="form-select" id="murderer">
-                        <option value="苏清辞">苏清辞</option>
-                        <option value="唐影">唐影</option>
                         <option value="曲蛊月">曲蛊月</option>
                         <option value="萧策">萧策</option>
+                        <option value="苏清辞">苏清辞</option>
+                        <option value="唐影">唐影</option>
                     </select>
                 </div>
                 
@@ -401,6 +401,35 @@
                     modal.style.display = 'none';
                 }
             });
+        }
+        
+        let autoLogoutTimer;
+        
+        function resetAutoLogout() {
+            clearTimeout(autoLogoutTimer);
+            autoLogoutTimer = setTimeout(function() {
+                // 清除登录状态
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('isVisitor');
+                localStorage.removeItem('hasSeenDisclaimer');
+                // 返回主页
+                window.location.href = 'index.html';
+            }, 10 * 60 * 1000); // 10分钟
+        }
+        
+        function setupAutoLogout() {
+            // 监听用户活动
+            window.addEventListener('click', resetAutoLogout);
+            window.addEventListener('mousemove', resetAutoLogout);
+            window.addEventListener('keypress', resetAutoLogout);
+            window.addEventListener('scroll', resetAutoLogout);
+            
+            // 初始设置定时器
+            resetAutoLogout();
+        }
+        
+        window.onload = function() {
+            setupAutoLogout();
         }
     </script>
 </body>

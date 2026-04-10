@@ -106,7 +106,7 @@
             <p>三个月前，谷中培育的"醉魂草"突然少了半株。这种草药性烈，少量可安神，过量则会让人陷入昏迷，若搭配其他药材，更能炼制出令人失智的迷药。我心中生疑，暗中追查，终于在药庐后的枯井里发现了残留的药渣，旁边还掉着一枚隐元会的令牌——那是玉贤的信物。</p>
             <p>我找到玉贤对质，他起初还想狡辩，见我拿出药渣和令牌，便索性撕破了伪装。他笑着说，那些醉魂草被他用来迷晕了谷外几个富户，抢走了钱财，更让我愤怒的是，他竟偷翻了我的书房，拿走了记载着克制五毒蛊术的方法，他威胁我如果我说出去，一切的职责都是由于我监管不力造成的，我没有办法只能替他瞒了下来。</p>
             <p>今天他竟然又来找我想要更稳定的合作，我不能放任这种毒瘤存在于世，也是为了弥补我之前的错，我终于迈出了这一步。</p>
-            <p>《毒经》上面标注着醉魂草的另一种用法——搭配"断魂花"可制成慢性毒药，服用后两时内无明显症状，最终会因经脉堵塞而死，且死后不易被察觉。我制作了专门的药茶让其他弟子送给玉贤，我知道用毒杀人违背了师父的教诲，可我实在找不到其他办法，就让我用往后余生承担这样的罪责吧。</p>
+            <p>《毒经》上面标注着醉魂草的另一种用法——搭配"断魂花"可制成慢性毒药，服用后一小时无明显症状，最终会因经脉堵塞而死，且死后不易被察觉。我制作了专门的药茶让其他弟子送给玉贤，我知道用毒杀人违背了师父的教诲，可我实在找不到其他办法，就让我用往后余生承担这样的罪责吧。</p>
         </div>
         <div class="success-text">追凶成功，凶手已经伏法，感谢你火眼金睛的决断</div>
         <a href="index.html" class="button">返回主页</a>
@@ -117,7 +117,31 @@
         window.onload = function() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('isVisitor');
+            
+            // 设置自动退出功能
+            setupAutoLogout();
         };
+        
+        let autoLogoutTimer;
+        
+        function resetAutoLogout() {
+            clearTimeout(autoLogoutTimer);
+            autoLogoutTimer = setTimeout(function() {
+                // 返回主页
+                window.location.href = 'index.html';
+            }, 10 * 60 * 1000); // 10分钟
+        }
+        
+        function setupAutoLogout() {
+            // 监听用户活动
+            window.addEventListener('click', resetAutoLogout);
+            window.addEventListener('mousemove', resetAutoLogout);
+            window.addEventListener('keypress', resetAutoLogout);
+            window.addEventListener('scroll', resetAutoLogout);
+            
+            // 初始设置定时器
+            resetAutoLogout();
+        }
     </script>
 </body>
 </html>

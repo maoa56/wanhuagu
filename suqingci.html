@@ -166,7 +166,7 @@
                     <div class="memo-text">
                         最近事情有点多，把账号密码记在这里<br>
                         账号是名字拼音<br>
-                        密码：LAGVWE，←4
+                        密码：LAJVWE，→4
                     </div>
                 </div>
             </div>
@@ -180,6 +180,35 @@
             
             content.classList.toggle('expanded');
             arrow.classList.toggle('expanded');
+        }
+        
+        let autoLogoutTimer;
+        
+        function resetAutoLogout() {
+            clearTimeout(autoLogoutTimer);
+            autoLogoutTimer = setTimeout(function() {
+                // 清除登录状态
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('isVisitor');
+                localStorage.removeItem('hasSeenDisclaimer');
+                // 返回主页
+                window.location.href = 'index.html';
+            }, 10 * 60 * 1000); // 10分钟
+        }
+        
+        function setupAutoLogout() {
+            // 监听用户活动
+            window.addEventListener('click', resetAutoLogout);
+            window.addEventListener('mousemove', resetAutoLogout);
+            window.addEventListener('keypress', resetAutoLogout);
+            window.addEventListener('scroll', resetAutoLogout);
+            
+            // 初始设置定时器
+            resetAutoLogout();
+        }
+        
+        window.onload = function() {
+            setupAutoLogout();
         }
     </script>
 </body>

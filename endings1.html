@@ -114,7 +114,31 @@
         window.onload = function() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('isVisitor');
+            
+            // 设置自动退出功能
+            setupAutoLogout();
         };
+        
+        let autoLogoutTimer;
+        
+        function resetAutoLogout() {
+            clearTimeout(autoLogoutTimer);
+            autoLogoutTimer = setTimeout(function() {
+                // 返回主页
+                window.location.href = 'index.html';
+            }, 10 * 60 * 1000); // 10分钟
+        }
+        
+        function setupAutoLogout() {
+            // 监听用户活动
+            window.addEventListener('click', resetAutoLogout);
+            window.addEventListener('mousemove', resetAutoLogout);
+            window.addEventListener('keypress', resetAutoLogout);
+            window.addEventListener('scroll', resetAutoLogout);
+            
+            // 初始设置定时器
+            resetAutoLogout();
+        }
     </script>
 </body>
 </html>

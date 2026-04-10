@@ -544,8 +544,8 @@
         
         function closeDisclaimer() {
             document.getElementById('disclaimerOverlay').style.display = 'none';
-            // 记录用户已看过声明
-            localStorage.setItem('hasSeenDisclaimer', 'true');
+            // 记录用户已看过声明（使用sessionStorage，只在当前会话有效）
+            sessionStorage.setItem('hasSeenDisclaimer', 'true');
         }
         
         let autoLogoutTimer;
@@ -553,12 +553,12 @@
         function resetAutoLogout() {
             clearTimeout(autoLogoutTimer);
             autoLogoutTimer = setTimeout(function() {
-                // 清除登录状态
+                // 清除登录状态和会话状态
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('isVisitor');
-                localStorage.removeItem('hasSeenDisclaimer');
-                // 刷新页面
-                window.location.reload();
+                sessionStorage.removeItem('hasSeenDisclaimer');
+                // 返回主页
+                window.location.href = 'index.html';
             }, 10 * 60 * 1000); // 10分钟
         }
         
@@ -576,8 +576,8 @@
         window.onload = function() {
             checkLoginStatus();
             
-            // 检查用户是否已经看过声明
-            const hasSeenDisclaimer = localStorage.getItem('hasSeenDisclaimer') === 'true';
+            // 检查用户是否已经看过声明（使用sessionStorage，只在当前会话有效）
+            const hasSeenDisclaimer = sessionStorage.getItem('hasSeenDisclaimer') === 'true';
             if (hasSeenDisclaimer) {
                 // 如果已经看过，隐藏声明弹窗
                 document.getElementById('disclaimerOverlay').style.display = 'none';

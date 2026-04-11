@@ -479,6 +479,8 @@
                 module.onclick = function() {
                     window.location.href = 'monitoring-playback.html';
                 };
+                // 保存监控回放模块的解锁状态
+                localStorage.setItem('monitoringUnlocked', 'true');
             } else {
                 alert('密码错误，请重试');
             }
@@ -527,6 +529,7 @@
         function checkLoginStatus() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const isVisitor = localStorage.getItem('isVisitor') === 'true';
+            const isMonitoringUnlocked = localStorage.getItem('monitoringUnlocked') === 'true';
             
             if (isLoggedIn) {
                 unlockModule('water-forum-module');
@@ -536,6 +539,15 @@
                 const overlay = module.querySelector('.locked-overlay');
                 if (overlay) {
                     overlay.remove();
+                }
+                
+                // 检查监控回放模块是否已解锁
+                if (isMonitoringUnlocked) {
+                    module.classList.remove('module-locked');
+                    document.getElementById('monitoring-password-container').style.display = 'none';
+                    module.onclick = function() {
+                        window.location.href = 'monitoring-playback.html';
+                    };
                 }
             } else if (isVisitor) {
                 unlockModule('lost-and-found-module');
@@ -553,9 +565,10 @@
         function resetAutoLogout() {
             clearTimeout(autoLogoutTimer);
             autoLogoutTimer = setTimeout(function() {
-                // 清除登录状态和会话状态
+                // 清除登录状态、解锁状态和会话状态
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('isVisitor');
+                localStorage.removeItem('monitoringUnlocked');
                 sessionStorage.removeItem('hasSeenDisclaimer');
                 // 返回主页
                 window.location.href = 'index.html';

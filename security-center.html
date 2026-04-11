@@ -408,9 +408,10 @@
         function resetAutoLogout() {
             clearTimeout(autoLogoutTimer);
             autoLogoutTimer = setTimeout(function() {
-                // 清除登录状态和会话状态
+                // 清除登录状态、解锁状态和会话状态
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('isVisitor');
+                localStorage.removeItem('monitoringUnlocked');
                 sessionStorage.removeItem('hasSeenDisclaimer');
                 // 返回主页
                 window.location.href = 'index.html';
